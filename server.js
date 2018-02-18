@@ -16,17 +16,56 @@ app.get('/ui/style.css', function (req, res) {
 app.get('/ui/madi.png', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'madi.png'));
 });
-
-app.get('/article-one',function(req,res){
-	res.sendFile(path.join(__dirname,'ui','article-one.html'));
-});
-
-app.get('/article-two',function(req,res){
-	res.sendFile(path.join(__dirname,'ui','article-two.html'));
-});
-
-app.get('/article-three',function(req,res){
-	res.sendFile(path.join(__dirname,'ui','article-three.html'));
+var articles={
+    "article-one": {
+        title: "Article-One",
+        heading:"Article-One",
+        content:"<p>This is my first article</p>",
+        date:"15 Feb, 2018"
+    },
+    "article-two":{
+        title: "Article-two",
+        heading:"Article-two",
+        content:"<p>This is my second article</p>",
+        date:"18 Feb, 2018"
+    },
+    "article-three":{
+        title: "Article-three",
+        heading:"Article-three",
+        content:"<p>This is my third article</p>",
+        date:"19 Feb, 2018"
+    }
+};
+function createTemplate(data){
+    var title=data.title;
+    var heading=data.heading;
+    var date=data.date;
+    var content=data.content;
+    var htmlTemplate= `
+    <html>
+        <head>
+            <title>${title} | Chirag Mittal</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="/ui/style.css" rel="stylesheet" />
+        </head>
+        <body>
+            <div class="container">
+                <a href="/">Home</a>
+                <h3>${heading}</h3>
+                <div>
+                    ${date}
+                </div>
+                <div>
+                    ${content}
+                </div>
+            </div>
+        </body>
+    </html>`
+    return htmlTemplate;
+}
+app.get('/:articleName',function(req,res){
+    var articleName=req.params.articleName;
+	res.send(createTemplate(articleName));
 });
 
 
